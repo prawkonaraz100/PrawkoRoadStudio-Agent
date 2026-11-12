@@ -1,4 +1,4 @@
 @echo off
 setlocal
-"F:\RoadMaker-evaluation\toolchain\Python312\python.exe" "%~dp0roadctl.py" %*
+"%~dp0..\reference\RoadMaker\toolchain\Python312\python.exe" "%~dp0roadctl.py" %*
 exit /b %ERRORLEVEL%

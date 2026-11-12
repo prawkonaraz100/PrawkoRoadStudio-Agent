@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-REPO = Path(os.environ.get("ROADMAKER_REPO", r"F:\RoadMaker-evaluation"))
+REPO = Path(os.environ.get("ROADMAKER_REPO", str(ROOT.parent))).resolve()
 PROJECTS = ROOT / "projects"
 sys.path.insert(0, str(ROOT / "vendor"))
 

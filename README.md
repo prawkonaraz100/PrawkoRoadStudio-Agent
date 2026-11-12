@@ -15,13 +15,13 @@ generatorem niestandardowego OpenDRIVE.
 ## Instalacja (potwierdzona na DESKTOP-G2FV0GJ)
 
 - Aktualny projekt: F:\PrawkoRoadStudio, gałąź feature/realistic-road-surfaces
-- Oryginalna kopia referencyjna: F:\RoadMaker-evaluation, commit bazowy c7a3f5a
+- Oryginalna kopia referencyjna: F:\PrawkoRoadStudio\reference\RoadMaker, commit bazowy c7a3f5a
 - GUI: F:\PrawkoRoadStudio\build\dev-windows\editor\roadmaker-editor.exe
-- Python: F:\RoadMaker-evaluation\toolchain\Python312\python.exe (3.12.10)
+- Python: F:\PrawkoRoadStudio\reference\RoadMaker\toolchain\Python312\python.exe (3.12.10)
 - Biblioteka C++/Python: vendor\roadmaker\_roadmaker.cp312-win_amd64.pyd
-- Narzędzie: F:\RoadMakerAgent\roadctl.cmd
-- Projekty: F:\RoadMakerAgent\projects\
-- Opisy scen: F:\RoadMakerAgent\specs\
+- Narzędzie: F:\PrawkoRoadStudio\agent\roadctl.cmd
+- Projekty: F:\PrawkoRoadStudio\agent\projects\
+- Opisy scen: F:\PrawkoRoadStudio\agent\specs\
 
 Plik vendor/roadmaker/_roadmaker.cp312-win_amd64.pyd to kopia natywnego
 modułu z nowego forka F:\PrawkoRoadStudio\build\dev-windows\python.
@@ -37,19 +37,19 @@ te same pliki OpenDRIVE/OpenSCENARIO co GUI.
 
 Wywołania w PowerShell (bez wymagania zmiany PATH):
 
-    & F:\RoadMakerAgent\roadctl.cmd status
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd status
 
-    & F:\RoadMakerAgent\roadctl.cmd build --spec F:\RoadMakerAgent\specs\urban_crossing.json --out F:\RoadMakerAgent\projects\urban_crossing\scene.xodr
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd build --spec F:\PrawkoRoadStudio\agent\specs\urban_crossing.json --out F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr
 
-    & F:\RoadMakerAgent\roadctl.cmd inspect F:\RoadMakerAgent\projects\urban_crossing\scene.xodr
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd inspect F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr
 
-    & F:\RoadMakerAgent\roadctl.cmd validate F:\RoadMakerAgent\projects\urban_crossing\scene.xodr
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd validate F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr
 
-    & F:\RoadMakerAgent\roadctl.cmd edit F:\RoadMakerAgent\projects\urban_crossing\scene.xodr --spec F:\RoadMakerAgent\specs\adjust_road.json --out F:\RoadMakerAgent\projects\urban_crossing_v2\scene.xodr
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd edit F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr --spec F:\PrawkoRoadStudio\agent\specs\adjust_road.json --out F:\PrawkoRoadStudio\agent\projects\urban_crossing_v2\scene.xodr
 
-    & F:\RoadMakerAgent\roadctl.cmd export F:\RoadMakerAgent\projects\urban_crossing\scene.xodr --out F:\RoadMakerAgent\projects\urban_crossing\scene.glb
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd export F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr --out F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.glb
 
-    & F:\RoadMakerAgent\roadctl.cmd open F:\RoadMakerAgent\projects\urban_crossing\scene.xodr
+    & F:\PrawkoRoadStudio\agent\roadctl.cmd open F:\PrawkoRoadStudio\agent\projects\urban_crossing\scene.xodr
 
 Polecenia zwracają JSON (w tym SHA-256, nazwy i trwałe identyfikatory dróg,
 błędy walidacji, PID GUI). Powtarzalność scen wynika z pliku wejściowego
@@ -148,8 +148,8 @@ Brak przetestowanego w tym adapterze kreatora ronda.
 
 ## Testy regresyjne
 
-    cd F:\RoadMakerAgent
-    F:\RoadMaker-evaluation\toolchain\Python312\python.exe -m unittest -v test_roadctl
+    cd F:\PrawkoRoadStudio\agent
+    F:\PrawkoRoadStudio\reference\RoadMaker\toolchain\Python312\python.exe -m unittest -v test_roadctl
 
 Testy tworzą i usuwają własne tymczasowe projekty w projects/.
 Nie modyfikują źródeł ani przykładowych plików producenta.

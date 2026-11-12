@@ -1,7 +1,7 @@
 # Audyt RoadMaker — architektura, funkcje i integracja agenta
 
 Data: 2026-11-12. Lokalny klon Robomous/RoadMaker:
-F:\RoadMaker-evaluation, main c7a3f5a (v0.0.1).
+F:\PrawkoRoadStudio\reference\RoadMaker, main c7a3f5a (v0.0.1).
 
 ## Architektura
 
@@ -63,7 +63,7 @@ odświeżania otwartego dokumentu po zapisie z zewnątrz.
 
 ## Co zbudowano
 
-F:\RoadMakerAgent\roadctl.py oraz roadctl.cmd mają polecenia:
+F:\PrawkoRoadStudio\agent\roadctl.py oraz roadctl.cmd mają polecenia:
 status, build, inspect, validate, edit, export i open.
 
 - Programowa budowa sieci drogowych i scenariuszy, kontrola błędów.
