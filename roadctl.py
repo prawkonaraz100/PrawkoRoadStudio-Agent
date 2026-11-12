@@ -143,7 +143,27 @@ def stack_apply(network, commands: list[dict]) -> rm.edit.EditStack:
     stack = rm.edit.EditStack()
     for item in commands:
         op = item["op"]
-        if op == "create_road":
+        if op == "add_object":
+            add_objects(network, stack, [item])
+            continue
+        if op == "add_sign":
+            add_signs(network, stack, [item])
+            continue
+        if op in ("set_junction_default_corner_radius", "set_corner_radius"):
+            jid = network.find_junction(str(item["junction"]))
+            if network.junction(jid) is None:
+                raise ValueError(f"Unknown junction {item['junction']}")
+            if op == "set_junction_default_corner_radius":
+                cmd = rm.edit.set_junction_default_corner_radius(network, jid, float(item["radius_m"]))
+            else:
+                corners = rm.junction_corners(network, jid)
+                index = int(item["corner_index"])
+                if index < 0 or index >= len(corners):
+                    raise ValueError(f"Invalid corner_index {index} (have {len(corners)})")
+                corner = corners[index]
+                cmd = rm.edit.set_corner_radius(network, jid, corner.arm_a, corner.arm_b,
+                                                float(item["radius_m"]))
+        elif op == "create_road":
             pts = [tuple(map(float, p)) for p in item["points"]]
             if len(pts) < 2:
                 raise ValueError("create_road needs >=2 points")
@@ -168,6 +188,26 @@ def stack_apply(network, commands: list[dict]) -> rm.edit.EditStack:
                 if lid is None:
                     raise ValueError(f"Road {item['road']} has no lane {item['lane']}")
                 cmd = rm.edit.set_lane_width(network, lid, float(item["width_m"]))
+            elif op in ("move_object", "set_object_model"):
+                oid = next((o for o in network.objects_of(rid)
+                            if network.object(o).odr_id == str(item["id"])), None)
+                if oid is None:
+                    raise ValueError(f"Road {item['road']} has no object {item['id']}")
+                if op == "move_object":
+                    cmd = rm.edit.move_object(network, oid, float(item["s"]), float(item["t"]))
+                else:
+                    cmd = rm.edit.set_object_model(network, oid, str(item["model"]))
+            elif op in ("move_signal", "set_signal_text", "set_signal_value"):
+                sid = next((s for s in network.signals_of(rid)
+                            if network.signal(s).odr_id == str(item["id"])), None)
+                if sid is None:
+                    raise ValueError(f"Road {item['road']} has no signal {item['id']}")
+                if op == "move_signal":
+                    cmd = rm.edit.move_signal(network, sid, float(item["s"]), float(item["t"]))
+                elif op == "set_signal_text":
+                    cmd = rm.edit.set_signal_text(network, sid, str(item["text"]))
+                else:
+                    cmd = rm.edit.set_signal_value(network, sid, float(item["value"]), str(item["unit"]))
             else:
                 raise ValueError(f"Unsupported operation: {op}")
         stack.push(network, cmd)

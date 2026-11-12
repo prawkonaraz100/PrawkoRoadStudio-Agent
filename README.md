@@ -92,7 +92,12 @@ kąt pose w JSON w stopniach, w C++ w radianach.
 
 Edytowanie istniejącej sceny: plik JSON z "operations": tablicą op:
 create_road, move_waypoint, translate_road, rename_road, set_node_elevation,
-set_lane_width. Po operacjach roadctl waliduje sieć i kopiuje scenariusz .xosc
+set_lane_width, add_object, add_sign, move_object, set_object_model,
+move_signal, set_signal_text, set_signal_value,
+set_junction_default_corner_radius, set_corner_radius.
+Operacja set_corner_radius wymaga junction, corner_index i radius_m;
+indeks narożnika należy odczytać z aktualnej geometrii skrzyżowania.
+Po operacjach roadctl waliduje sieć i kopiuje scenariusz .xosc
 z uwzględnieniem nowego pliku drogowego.
 
 Dodatkowe gotowe przykłady znajdują się w specs:

@@ -131,6 +131,36 @@ class RoadMakerAgentTests(unittest.TestCase):
             self.assertIn("<Story name=", text)
             self.assertEqual(len(ctl.rm.osc.validate_scenario(scenario)), 0)
 
+    def test_objects_signs_and_corner_radius_editing(self):
+        network, _ = ctl.create_scene({
+            "intersections": [{"kind": "x", "gap_m": 24, "profile": "urban"}],
+            "objects": [{"road": "1", "id": "oak", "s": 18, "t": 8.5,
+                         "model": "tree_oak", "type": "tree"}],
+            "signs": [{"road": "1", "id": "stop", "s": 20, "t": -6.5,
+                       "country": "US", "type": "R1-1"}],
+        })
+        self.assertEqual(network.junction_count, 1)
+        operations = [
+            {"op": "move_object", "road": "1", "id": "oak", "s": 24, "t": 8.5},
+            {"op": "set_object_model", "road": "1", "id": "oak", "model": "shrub"},
+            {"op": "move_signal", "road": "1", "id": "stop", "s": 26, "t": -6.5},
+            {"op": "set_junction_default_corner_radius", "junction": "1", "radius_m": 5},
+            {"op": "set_corner_radius", "junction": "1", "corner_index": 0, "radius_m": 4},
+            {"op": "add_object", "road": "1", "id": "oak2", "s": 10, "t": 8.5,
+             "model": "tree_oak", "type": "tree"},
+        ]
+        stack = ctl.stack_apply(network, operations)
+        self.assertEqual(stack.size, len(operations))
+        self.assertFalse(ctl.validate(network))
+        jid = network.junction_ids[0]
+        self.assertTrue(ctl.rm.junction_corners(network, jid)[0].radius_authored)
+        out = self.root / "corner_test.xodr"
+        result = ctl.save_output(network, out)
+        self.assertEqual(result["errors"], 0)
+        loaded, issues = ctl.load_network(out)
+        self.assertEqual(loaded.junction(loaded.junction_ids[0]).default_corner_radius, 5)
+        self.assertEqual(ctl.describe(loaded, out, issues)["errors"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

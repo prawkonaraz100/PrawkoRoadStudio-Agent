@@ -25,6 +25,9 @@ przykładach, lecz niezintegrowana/testowana w tej iteracji.
 |---|---|---|
 | Drogi proste i łukowe | TEST | create_road, move_waypoint, s_curve |
 | Profile i szerokości pasów | TEST | LaneProfile, set_lane_width |
+| Promienie narożników skrzyżowań | TEST | set_corner_radius, set_junction_default_corner_radius |
+| Przesuwanie i zmiana modeli obiektów | TEST | move_object, set_object_model, add_object |
+| Przesuwanie znaków/sygnalizatorów | TEST | move_signal, add_signal |
 | Skrzyżowania X i T | TEST | assembly.x_intersection / t_intersection |
 | Niestandardowe skrzyżowanie z końców dróg | TEST | create_junction |
 | Sygnalizacja i STOP | TEST | signalize_junction |
@@ -83,7 +86,8 @@ status, build, inspect, validate, edit, export i open.
 - cut_in: aktorzy Ego/Target, zdarzenie LaneChangeAction, 0 błędów.
 - Eksport .glb: PASS.
 - Otwarcie wygenerowanego pliku w Qt GUI na Windows: PASS.
-- 5/5 testów regresyjnych PASS.
+- 6/6 testów regresyjnych PASS, w tym trwały zapis promienia narożnika,
+  przesuwanie obiektów i sygnalizatorów oraz zmiana modeli.
 
 Walidacja strukturalna ASAM nie jest tym samym co audyt przepisów
 polskiego ruchu drogowego, fizyki symulacji ani realności wykonania manewru.
