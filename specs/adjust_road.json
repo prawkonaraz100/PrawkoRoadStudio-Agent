@@ -1,0 +1,16 @@
+{
+  "name": "PrawkoNaRaz - korekta układu",
+  "operations": [
+    {
+      "op": "rename_road",
+      "road": "1",
+      "name": "Aleja główna"
+    },
+    {
+      "op": "set_lane_width",
+      "road": "1",
+      "lane": "-1",
+      "width_m": 3.75
+    }
+  ]
+}

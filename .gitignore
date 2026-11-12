@@ -1,0 +1,7 @@
+/vendor/
+/projects/
+/__pycache__/
+/.pytest_cache/
+*.pyc
+*.pyd
+*.log

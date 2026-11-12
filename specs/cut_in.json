@@ -1,0 +1,53 @@
+{
+  "name": "Manewr zmiany pasa - sytuacja drogowa",
+  "roads": [
+    {
+      "name": "Arteria",
+      "profile": "arterial",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          220,
+          0
+        ]
+      ]
+    }
+  ],
+  "scenario": {
+    "description": "Wjazd pojazdu Target przed Ego po zbliżeniu do 15m",
+    "stop_after_s": 35,
+    "actors": [
+      {
+        "name": "Ego",
+        "kind": "car",
+        "road": "1",
+        "lane": "-1",
+        "s": 30,
+        "speed_kmh": 50
+      },
+      {
+        "name": "Target",
+        "kind": "car",
+        "road": "1",
+        "lane": "-2",
+        "s": 17,
+        "speed_kmh": 56
+      }
+    ],
+    "maneuvers": [
+      {
+        "kind": "lane_change",
+        "actor": "Target",
+        "relative_lane": 1,
+        "duration_s": 2,
+        "trigger": {
+          "distance_to": "Ego",
+          "distance_m": 15
+        }
+      }
+    ]
+  }
+}

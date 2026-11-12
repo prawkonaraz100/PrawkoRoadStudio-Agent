@@ -1,0 +1,76 @@
+{
+  "name": "PrawkoNaRaz - skrzyżowanie miejskie",
+  "intersections": [
+    {
+      "kind": "x",
+      "pose": [
+        0,
+        0,
+        0
+      ],
+      "arm_length_m": 80,
+      "gap_m": 24,
+      "profile": "urban"
+    }
+  ],
+  "features": {
+    "crosswalks": true,
+    "lane_arrows": true,
+    "control": "two_phase"
+  },
+  "objects": [
+    {
+      "id": "drzewo_01",
+      "road": "1",
+      "s": 26,
+      "t": 8.5,
+      "type": "tree",
+      "model": "tree_oak",
+      "height_m": 5,
+      "radius_m": 1.25
+    },
+    {
+      "id": "drzewo_02",
+      "road": "2",
+      "s": 34,
+      "t": -8.5,
+      "type": "tree",
+      "model": "tree_birch",
+      "height_m": 4.5,
+      "radius_m": 1.1
+    },
+    {
+      "id": "drzewo_03",
+      "road": "3",
+      "s": 41,
+      "t": 8.5,
+      "type": "tree",
+      "model": "tree_poplar",
+      "height_m": 6,
+      "radius_m": 1.2
+    }
+  ],
+  "scenario": {
+    "description": "Dwa pojazdy do testu skrzyżowania ze światłami",
+    "sync_signals": true,
+    "stop_after_s": 30,
+    "actors": [
+      {
+        "name": "Ego",
+        "kind": "car",
+        "road": "1",
+        "lane": "-1",
+        "s": 20,
+        "speed_kmh": 30
+      },
+      {
+        "name": "Truck",
+        "kind": "truck",
+        "road": "2",
+        "lane": "-1",
+        "s": 22,
+        "speed_kmh": 25
+      }
+    ]
+  }
+}
