@@ -14,18 +14,24 @@ generatorem niestandardowego OpenDRIVE.
 
 ## Instalacja (potwierdzona na DESKTOP-G2FV0GJ)
 
-- Źródła RoadMaker: F:\RoadMaker-evaluation, main c7a3f5a, v0.0.1
-- GUI: F:\RoadMaker-evaluation\build\dev-windows\editor\roadmaker-editor.exe
+- Aktualny projekt: F:\PrawkoRoadStudio, gałąź feature/realistic-road-surfaces
+- Oryginalna kopia referencyjna: F:\RoadMaker-evaluation, commit bazowy c7a3f5a
+- GUI: F:\PrawkoRoadStudio\build\dev-windows\editor\roadmaker-editor.exe
 - Python: F:\RoadMaker-evaluation\toolchain\Python312\python.exe (3.12.10)
 - Biblioteka C++/Python: vendor\roadmaker\_roadmaker.cp312-win_amd64.pyd
 - Narzędzie: F:\RoadMakerAgent\roadctl.cmd
 - Projekty: F:\RoadMakerAgent\projects\
 - Opisy scen: F:\RoadMakerAgent\specs\
 
-Plik vendor/_roadmaker.pyd to kopia **zbudowanego lokalnie** modułu z
-build/dev-windows/python/. Powstał przez kompilację oryginalnego C++ RoadMaker,
-a nie przez reimplementację geometrii w Pythonie. Nie aktualizować źródeł
-RoadMaker bez ponownego skompilowania modułu i zestawu regresji.
+Plik vendor/roadmaker/_roadmaker.cp312-win_amd64.pyd to kopia natywnego
+modułu z nowego forka F:\PrawkoRoadStudio\build\dev-windows\python.
+Nie aktualizować forka bez ponownego zbudowania biblioteki i powtórzenia
+testów. Dla projektów nowego edytora używać launchera:
+
+    & F:\PrawkoRoadStudio\scripts\prawko-agent.cmd status
+
+Launcher kieruje polecenia open do nowego PrawkoRoadStudio i wykorzystuje
+te same pliki OpenDRIVE/OpenSCENARIO co GUI.
 
 ## Polecenia
 

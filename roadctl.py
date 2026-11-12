@@ -665,7 +665,10 @@ def run():
         if output.exists():
             raise FileExistsError(output)
         output.parent.mkdir(parents=True, exist_ok=True)
-        rm.export_glb(rm.build_network_mesh(network), str(output))
+        options = rm.MeshOptions()
+        if hasattr(options, "raised_sidewalks"):
+            options.raised_sidewalks = True
+        rm.export_glb(rm.build_network_mesh(network, options), str(output))
         emit({"mesh": str(output), "bytes": output.stat().st_size,
               "source_sha256": sha(source)})
 
