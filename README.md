@@ -25,8 +25,12 @@ generatorem niestandardowego OpenDRIVE.
 
 Plik vendor/roadmaker/_roadmaker.cp312-win_amd64.pyd to kopia natywnego
 modułu z nowego forka F:\PrawkoRoadStudio\build\dev-windows\python.
-Nie aktualizować forka bez ponownego zbudowania biblioteki i powtórzenia
-testów. Dla projektów nowego edytora używać launchera:
+Po każdej kompilacji `scripts/prawko-build-win.ps1 -Target editor`, `python`
+lub `all` skrypt automatycznie kopiuje zbudowany moduł do `agent/vendor`
+i sprawdza jego SHA-256. `scripts/prawko-verify-win.ps1` odmawia PASS,
+jeśli pliki `.pyd` różnią się; dodatkowy test eksportu GLB sprawdza
+wyniesione narożniki, fazy i UV. To chroni przed niezauważonym eksportem
+płaskich chodników ze starego modułu. Dla projektów nowego edytora używać launchera:
 
     & F:\PrawkoRoadStudio\scripts\prawko-agent.cmd status
 

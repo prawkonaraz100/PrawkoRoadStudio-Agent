@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import hashlib
+import json
+import struct
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,6 +19,30 @@ class RoadMakerAgentTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_export_uses_current_raised_curbs_and_glb_uvs(self):
+        """Catch the stale .pyd that silently flattened every exported junction."""
+        source = ctl.REPO / "assets" / "samples" / "gs1_urban_intersection.xodr"
+        network, _ = ctl.load_network(source)
+        out = self.root / "raised-curbs.glb"
+        ctl.export_raised_glb(network, out)
+        blob = out.read_bytes()
+        magic, version, total = struct.unpack_from("<4sII", blob)
+        self.assertEqual(magic, b"glTF")
+        self.assertEqual(version, 2)
+        self.assertEqual(total, len(blob))
+        chunk_size, chunk_type = struct.unpack_from("<II", blob, 12)
+        self.assertEqual(chunk_type, 0x4E4F534A)
+        gltf = json.loads(blob[20:20 + chunk_size])
+        bevels = [m for m in gltf["meshes"] if "corner bevel" in m.get("name", "")]
+        self.assertGreaterEqual(len(bevels), 4, "raised sidewalk corners missing from agent GLB")
+        for mesh in bevels:
+            for primitive in mesh["primitives"]:
+                for key in ("POSITION", "NORMAL", "TEXCOORD_0"):
+                    self.assertIn(key, primitive["attributes"], mesh["name"])
+                accessor = gltf["accessors"][primitive["attributes"]["TEXCOORD_0"]]
+                self.assertEqual(accessor["type"], "VEC2")
+                self.assertGreater(accessor["count"], 0)
 
     def test_x_intersection_with_scenario_and_roundtrip(self):
         spec = {

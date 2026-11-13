@@ -60,6 +60,15 @@ def emit(payload: dict) -> None:
     print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
 
 
+def export_raised_glb(network, output: Path) -> None:
+    """Export with the same 3-D sidewalk mode used by PrawkoRoadStudio GUI."""
+    options = rm.MeshOptions()
+    if not hasattr(options, "raised_sidewalks"):
+        raise RuntimeError("STALE_AGENT_BINDING: rebuild editor/python to enable 3-D curbs")
+    options.raised_sidewalks = True
+    rm.export_glb(rm.build_network_mesh(network, options), str(output))
+
+
 def sha(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as fh:
@@ -665,10 +674,7 @@ def run():
         if output.exists():
             raise FileExistsError(output)
         output.parent.mkdir(parents=True, exist_ok=True)
-        options = rm.MeshOptions()
-        if hasattr(options, "raised_sidewalks"):
-            options.raised_sidewalks = True
-        rm.export_glb(rm.build_network_mesh(network, options), str(output))
+        export_raised_glb(network, output)
         emit({"mesh": str(output), "bytes": output.stat().st_size,
               "source_sha256": sha(source)})
 
@@ -676,6 +682,6 @@ def run():
 if __name__ == "__main__":
     try:
         run()
-    except (ValueError, OSError, KeyError, TypeError, IndexError) as exc:
+    except (ValueError, OSError, KeyError, TypeError, IndexError, RuntimeError) as exc:
         emit({"ok": False, "error": str(exc), "type": type(exc).__name__})
         raise SystemExit(1)
