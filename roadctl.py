@@ -66,6 +66,9 @@ def export_raised_glb(network, output: Path) -> None:
     if not hasattr(options, "raised_sidewalks"):
         raise RuntimeError("STALE_AGENT_BINDING: rebuild editor/python to enable 3-D curbs")
     options.raised_sidewalks = True
+    if not hasattr(options, "curb_render_lod"):
+        raise RuntimeError("STALE_AGENT_BINDING: rebuild Python for visual curb LOD")
+    options.curb_render_lod = True
     rm.export_glb(rm.build_network_mesh(network, options), str(output))
 
 

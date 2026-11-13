@@ -44,6 +44,26 @@ class RoadMakerAgentTests(unittest.TestCase):
                 self.assertEqual(accessor["type"], "VEC2")
                 self.assertGreater(accessor["count"], 0)
 
+        # Verify the opt-in curved render seam is really used by agent GLB.
+        # The default raised kernel path remains byte-compatible with legacy
+        # topology; the richer GLB must contain more actual corner triangles.
+        baseline = ctl.rm.MeshOptions()
+        baseline.raised_sidewalks = True
+        self.assertFalse(baseline.curb_render_lod)
+        base_file = self.root / "base-curbs.glb"
+        ctl.rm.export_glb(ctl.rm.build_network_mesh(network, baseline), str(base_file))
+        base_blob = base_file.read_bytes()
+        base_size, _ = struct.unpack_from("<II", base_blob, 12)
+        base_gltf = json.loads(base_blob[20:20 + base_size])
+        def bevel_triangles(model):
+            return sum(
+                model["accessors"][p["indices"]]["count"] // 3
+                for m in model["meshes"] if "corner bevel" in m.get("name", "")
+                for p in m["primitives"]
+            )
+        self.assertGreater(bevel_triangles(gltf), bevel_triangles(base_gltf),
+                           "Agent GLB skipped the safe curb visual LOD")
+
     def test_x_intersection_with_scenario_and_roundtrip(self):
         spec = {
             "intersections": [{"kind": "x", "gap_m": 24, "arm_length_m": 80,
